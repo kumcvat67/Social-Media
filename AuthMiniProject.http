@@ -1,0 +1,6 @@
+@AuthMiniProject_HostAddress = http://localhost:5036
+
+GET {{AuthMiniProject_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
