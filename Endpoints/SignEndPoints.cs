@@ -1,12 +1,12 @@
 using System.Text.RegularExpressions;
 using List;
 
-public static class AuthorizationEndPoint
+public static class SignEndpoints
 {
-    public static void authorization(this WebApplication app)
+    public static void sign(this WebApplication app)
     {
-        var user = app.MapGroup("api/user");
-        user.MapPost("signUp", SignUp);
+        var group = app.MapGroup("api/user");
+        group.MapPost("signUp", SignUp);
     }
     
     public static IResult SignUp(SignupReq req)
