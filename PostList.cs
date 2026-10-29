@@ -7,20 +7,35 @@ public enum Istatus
 public class DataBase
 {
     public static List<Post> Posts = new List<Post>();
+    public static List<User> Users = new List<User>();
 }
 
 public class Post
 {
-    public string username{get; set;}
+    private static int _counter;
+    public int PostID{get;set;}
+    public string username{get;set;}
     public string text{get; set;}
 
-    public Post(string userName, string PostText)
+    public Post(string name, string PostText)
     {
-        username = userName;
+        username = name;
         text = PostText;
+        PostID=_counter++;
     }
 }
 
+public class User
+{
+    private static int _counter = 1;
+    public string username{get;set;}
+    public string password{get;set;}
+    public User(string name, string Password)
+    {
+        username=name;
+        password=Password;
+    }
+}
 public class IBaseManager
 {
     Istatus addPost(string username, string text)
@@ -28,4 +43,8 @@ public class IBaseManager
         DataBase.Posts.Add(new Post(username, text));
         return Istatus.ok;
     }
+    bool isThereUser(string username)
+    {
+        return DataBase.Users.Any(u => u.username==username);
+    } 
 }
