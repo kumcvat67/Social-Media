@@ -14,23 +14,19 @@ public static class SignEndpoints
     {
         var user = DataBase.Users.FirstOrDefault(u=>u.username==req.username);
 
-        if (user is null)
+        if (user is null || user.password != req.password)
         {
-            return Results.BadRequest(new {message="В базі такого логіна нема"});
-        }
-        if (user.password != req.password)
-        {
-            return Results.BadRequest(new {message="Невірний пароль"});
+            return Results.Unauthorized();
         }
         return Results.Ok();
     }
     public static IResult SignUp(SignupReq req)
     {
-        if(DataBase.Users.Any(u=>u.username==req.username))return Results.BadRequest(new {message="Такий користувач уже зареєстрований"});
-        if(string.IsNullOrWhiteSpace(req.password)||req.password.Length<8)return Results.BadRequest(new {message="Довжина пароля має бути 8 та більше символів"});
+        if(DataBase.Users.Any(u=>u.username==req.username))return Results.Conflict();
+        if(string.IsNullOrWhiteSpace(req.password)||req.password.Length<8)return Results.BadRequest();
 
         DataBase.Users.Add(new User(req.username,req.password));
-        return Results.Ok();
+        return Results.Created();
     }
 }
 
