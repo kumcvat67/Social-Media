@@ -7,7 +7,16 @@ public static class PostEndPoint
         var group = app.MapGroup("api/post");
         group.MapPost("make", (PostReq req) =>
         {
-            DataBase.Posts.Add(new Post(req.username, req.text));
+            string? username = tokenBase.checkToken(req.token);
+            if(username==null)
+            {
+                return Results.Unauthorized();
+            }
+            if (string.IsNullOrWhiteSpace(req.text))
+            {
+                return Results.BadRequest(new{error="Empty post"});
+            }
+            DataBase.Posts.Add(new Post(username, req.text));
             return Results.Ok();
         });
         group.MapGet("get", () =>
@@ -19,4 +28,4 @@ public static class PostEndPoint
     }
 }
 
-public record PostReq(string username, string text);
+public record PostReq(string token, string text);
