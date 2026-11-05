@@ -7,22 +7,32 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="one">
-        <button id="update" class="update">update</button>
-    </div>
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="auth-box">
+                <div class="post-add">
+                    <input type="text" id="NickInput" placeholder="Введіть нік">
+                    <input type="password" id="Password" placeholder="Введіть пароль">
+                    <button id="SignIn">Sign In</button>
+                </div>
+            </div>
+        </aside>
 
-    <div class="post-add">
-        <input type="text" id="NickInput" placeholder="Введіть нік">
-        <input type="text" id="TextInput" placeholder="Введіть текст">
-        <button id="enter">Enter</button>
-    </div>
+        <main class="main-content">
+            <div class="one">
+                <input type="text" id="textinput" placeholder="Введіть текст">
+                <button id="enter">Enter</button>
+                <button id="update" class="update">update</button>
+            </div>
 
-    <div id="lent">
-        <div class="post">
-        <button id="Nickname">Nickname</button>
-        text
-        </div>
+            <div id="lent"></div>
+        </main>
     </div>
+    
+
+    
+
+    
     
     <script src="script.js"></script>
 </body>

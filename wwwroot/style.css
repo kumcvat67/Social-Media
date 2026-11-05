@@ -47,3 +47,21 @@
     display: flex;
     justify-content: center;
 }
+body {
+    margin: 0;
+}
+.layout{
+    display: flex;
+    min-height: 100vh;
+}
+.sidebar{
+    width: 140px;
+    padding: 10px;
+    border-right: 1px solid #ddd;
+}
+.main-content{
+    flex:1;
+    padding: 10px;
+    max-width: 600px;
+    margin: 0;
+}
