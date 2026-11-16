@@ -25,6 +25,15 @@ public static class PostEndPoint
             if (AllPosts == null) { return Results.BadRequest(); }
             return Results.Ok(AllPosts);
         });
+        group.MapPost("like", (string token, string postId) =>
+        {
+            var user = tokenBase.checkToken(token);
+            if (user==null){return Results.Unauthorized();}
+            var post = DataBase.Posts.FirstOrDefault(p=>p.PostID==postId);
+            if (post==null){return Results.NotFound();}
+            bool isLiked = post.setLike(user);
+            return Results.Ok(new{like=isLiked});
+        });
     }
 }
 
