@@ -34,6 +34,24 @@ public static class PostEndPoint
             bool isLiked = post.setLike(user);
             return Results.Ok(new{like=isLiked});
         });
+        group.MapPost("comment/{postId}", (string postId, PostReq req) =>
+        {
+            var user = tokenBase.checkToken(req.token);
+            if (user==null){return Results.Unauthorized();}
+            var mother_post = DataBase.Posts.FirstOrDefault(p=>p.PostID==postId);
+            if (mother_post==null){return Results.NotFound();}
+            if (string.IsNullOrWhiteSpace(req.text))
+            {
+                return Results.BadRequest(new{error="Empty post"});
+            }
+            DataBase.Comments.Add(new CommentPost(user,mother_post.PostID, req.text));
+            return Results.Ok();
+        });
+        group.MapGet("comments/{postId}", (string postId) =>
+        {
+            List<CommentPost> Allpost = DataBase.Comments.Where(c=>c.ParentPostId==postId).ToList();
+            return Results.Ok(Allpost);
+        });
     }
 }
 

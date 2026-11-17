@@ -12,7 +12,7 @@ public class Post
     {
         username = name;
         text = PostText;
-        PostID=username+"#"+_counter++;
+        PostID=username+"-"+_counter++;
     }
     public bool setLike(string username)
     {
@@ -26,5 +26,14 @@ public class Post
             LikesList.Remove(username);
             return false;
         }
+    }
+}
+
+public class CommentPost : Post
+{
+    public string ParentPostId{get; set;}
+    public CommentPost(string user, string parentPost, string commentText): base(user, commentText)
+    {
+        ParentPostId = parentPost;
     }
 }
