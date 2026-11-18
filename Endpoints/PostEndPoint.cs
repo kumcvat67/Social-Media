@@ -34,6 +34,32 @@ public static class PostEndPoint
             bool isLiked = post.setLike(user);
             return Results.Ok(new{like=isLiked});
         });
+        group.MapDelete("{id}", (string id, string token) =>
+        {
+            var user = tokenBase.checkToken(token);
+            if (user == null) { return Results.Unauthorized(); }
+
+            var post = DataBase.Posts.FirstOrDefault(p => p.PostID == id);
+            if (post != null)
+            {
+                if (post.username != user) { return Results.Forbid(); }
+
+                DataBase.Posts.Remove(post);
+                DataBase.Comments.RemoveAll(c => c.ParentPostId == id); 
+                return Results.Ok(new { deleted = "post" });
+            }
+
+            var comment = DataBase.Comments.FirstOrDefault(c => c.PostID == id);
+            if (comment != null)
+            {
+                if (comment.username != user) { return Results.Forbid(); }
+
+                DataBase.Comments.Remove(comment);
+                return Results.Ok(new { deleted = "comment" });
+            }
+
+            return Results.NotFound();
+        });
         group.MapPost("comment/{postId}", (string postId, PostReq req) =>
         {
             var user = tokenBase.checkToken(req.token);
